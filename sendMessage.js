@@ -49,6 +49,9 @@ var send_message = {
       );
     }
 
+    const mri1 = "xxxxx";
+    const mri2 = "yyyyy";
+
     req.body.messagetype = "Text";
     req.body.contenttype = "text";
     req.body.clientmessageid = newClientMessageId();
@@ -58,7 +61,7 @@ var send_message = {
       subject: null
     };
     var data = {
-      url: "xxx",
+      url: "xxx" + mri1 + "xxx" + mri2 + "xxx",
       method: "POST",
       headers: {
         Authentication: "xxxx",
@@ -70,19 +73,34 @@ var send_message = {
     };
 
     request(data, function(err, result, bodyData) {
-
-      err = null;
-
       if (err || !result.statusCode || result.statusCode != 201 || !bodyData) {
-        return next("No message could be posted.Request failed");
+        if (result && result.statusCode === 404) {
+          data.url = "xxx" + mri2 + "xxx" + mri1 + "xxx";
+          request(data, function(err2, result2, bodyData2) {
+            // console.log("--------- inside retry -----");
+            // console.log(bodyData2);
+            if (err2 || !result2.statusCode || result2.statusCode != 201 || !bodyData2) {
+                return next("No message could be posted.Request failed");
+            }
+            bodyData2 = JSON.parse(bodyData2);
+
+            var response =
+              "Message posted successfully with OriginalArrivalTime : " +
+              bodyData2.OriginalArrivalTime;
+            return res.json({ message: response });
+          });
+        }
+        else{
+            return next("No message could be posted.Request failed");
+        }
+      }else{
+        bodyData = JSON.parse(bodyData);
+
+        var response =
+          "Message posted successfully with OriginalArrivalTime : " +
+          bodyData.OriginalArrivalTime;
+        return res.json({ message: response });
       }
-
-      bodyData = JSON.parse(bodyData);
-
-      var response =
-        "Message posted successfully with OriginalArrivalTime : " +
-        bodyData.OriginalArrivalTime;
-      return res.json({ message: response });
     });
   },
 
