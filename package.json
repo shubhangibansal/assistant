@@ -1,0 +1,17 @@
+{
+  "name": "sendMessageToTeams-service",
+  "version": "0.0.1",
+  "description": "Send Message to Teams",
+  "main": "index.js",
+  "scripts": {},
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "connect-redis": "^3.1.0",
+    "cookie-parser": "^1.4.3",
+    "express": "4.11.1",
+    "express-session": "^1.13.0",
+    "http-proxy": "~1.6",
+    "request": "^2.45.0",
+    "util": "^0.10.3"
+  }
+}
