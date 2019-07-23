@@ -11,4 +11,9 @@ module.exports = function(app){
  * }
  */
 app.post('/sendData',sendMessage.formData, sendMessage.error);
+/**
+ * query:
+ *  email: shban@microsoft.com
+ */
+app.get('/getUserMriWithEmail', sendMessage.getUserInfo, sendMessage.error);
 }

@@ -3,6 +3,34 @@
 var request = require("request");
 
 var send_message = {
+  getUserInfo: function(req, res, next) {
+    // console.log("inside getUserInfo --- --- - - - -- - --");
+    // console.log("getiing req.query email  ------", req.query);
+    if (!req.query) {
+      return next("No user Email sent.Request failed");
+    }
+    var data = {
+      url: "xxx",
+      method: "POST",
+      headers: {
+        authorization: "xxx",
+        Origin: "https://teams.microsoft.com",
+        Referer: "xxx",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: req.query.email
+    };
+    request(data, function(err, result, bodyData) {
+      if (err || !result.statusCode || result.statusCode != 200 || !bodyData) {
+        return next("No user data could be fetched.Request failed");
+      }
+      bodyData = JSON.parse(bodyData);
+      bodyData = bodyData.value[0].mri.split(":");
+      var response = "User data retrieved with mri id : " + bodyData[2];
+      return res.json({ message: response });
+    });
+  },
+
   formData: function(req, res, next) {
 
     function newClientMessageId(){
