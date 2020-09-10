@@ -10,7 +10,7 @@
     "cookie-parser": "^1.4.3",
     "express": "4.11.1",
     "express-session": "^1.13.0",
-    "http-proxy": "~1.6",
+    "http-proxy": "~1.18",
     "request": "^2.45.0",
     "util": "^0.10.3"
   }
